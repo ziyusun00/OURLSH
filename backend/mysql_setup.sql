@@ -2,8 +2,8 @@ CREATE DATABASE IF NOT EXISTS ourlsh;
 
 USE ourlsh;
 
-    CREATE TABLE landlord(
-        'id' SERIAL,
+    CREATE TABLE 'ourlsh'.'landlord'(
+        'id' SERIAL NOT NULL,
         'password' VARCHAR(255) NOT NULL,
         'email' VARCHAR(255) NOT NULL,
         'first_name' VARCHAR(255) NOT NULL,
@@ -11,8 +11,23 @@ USE ourlsh;
          PRIMARY KEY ('id')
     );
 
-    CREATE TABLE tenant(
-        'id' SERIAL,
+     CREATE TABLE 'ourlsh'.'prop'(
+        'id' SERIAL NOT NULL,
+        'date_available' DATE NOT NULL,
+        'status' INT  NOT NULL,
+        'landlord_id' INT  NOT NULL,
+        'prop_name' VARCHAR(255) NOT NULL,
+        'address' VARCHAR(255) NOT NULL,
+        'description' VARCHAR (255) NOT NULL,
+        'occupied' BOOLEAN 
+        PRIMARY KEY ('id'),
+        FOREIGN KEY ('landlord_id') REFERENCES landlord(id)
+
+        
+    );
+
+    CREATE TABLE 'ourlsh'.'tenant'(
+        'id' SERIAL NOT NULL,
         'password' VARCHAR(255) NOT NULL,
         'email' VARCHAR(255) NOT NULL,
         'first_name' VARCHAR(255) NOT NULL,
@@ -21,6 +36,11 @@ USE ourlsh;
         'landlord_id' INT,
         PRIMARY KEY ('id'),
         FOREIGN KEY ('landlord_id') REFERENCES landlord(id),
+        FOREIGN KEY ('prop_id') REFERENCES 'ourlsh'.'prop'(id)
 
-        CREATE TABLE prop
     );
+
+   
+
+    
+
