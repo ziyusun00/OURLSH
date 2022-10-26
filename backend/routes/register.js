@@ -3,6 +3,7 @@ const express = require('express');
 router = express.Router();
 router.use(bodyParser.json());
 
+//to create a tenant
 router.post('/tenant', async (req, res, next) => {
 
     let email = req.body.email;
@@ -24,7 +25,7 @@ router.post('/tenant', async (req, res, next) => {
     next();
  });
  
- //for landlord
+ //to create a landlord
  router.post('/landlord', async (req, res, next) => {
 
     let email = req.body.email;
