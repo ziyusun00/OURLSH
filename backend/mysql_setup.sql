@@ -30,8 +30,8 @@ CREATE TABLE tenant(
         email VARCHAR(255) NOT NULL,
         first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255) NOT NULL,
-        prop_id INT NOT NULL REFERENCES prop(id),
-        landlord_id INT NOT NULL REFERENCES landlord(id)
+        prop_id INT REFERENCES prop(id),
+        landlord_id INT REFERENCES landlord(id)
 );
 
 # INVOICE TABLE
