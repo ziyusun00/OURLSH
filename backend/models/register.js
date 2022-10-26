@@ -1,13 +1,23 @@
 const knex = require('../database/knex');
 const TENANT_TABLE = 'tenant';
+const LANDLORD_TABLE = 'landlord';
    
-   const registerTenant = async (crap, ton, of, stuff) => {
-      console.log("made it inside the models/tenant.js")
-       const query = knex(TENANT_TABLE).insert({ crap, ton, of, stuff });
+   const createTenant = async (email, password, first_name, last_name) => {
+      console.log("creating a tenant")
+       const query = knex(TENANT_TABLE).insert({email, password, first_name, last_name});
+       const results = await query;
+       return results;
+   }
+
+   const createLandlord = async (email, password, first_name, last_name) => {
+      console.log("creating a landlord")
+       const query = knex(LANDLORD_TABLE).insert({email, password, first_name, last_name});
        const results = await query;
        return results;
    }
    
+   
 module.exports = {
-   fetchTenantByID
+   createTenant,
+   createLandlord
 }
