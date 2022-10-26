@@ -10,13 +10,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.3",
-    "mysql": "^2.18.1"
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "dev": "nodemon server.js"
   }
 }
