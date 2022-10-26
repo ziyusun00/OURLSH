@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
-const tenantRoutes = require('./routes/tenant');
-const { createModelsMiddleware } = require('./middleware/model-middleware');
+const tenantRoutes = require('./routes/tenant' );
+const registerRoutes = require('./routes/register');
+const {createModelsMiddleware} = require('./middleware/model-middleware' );
+
 const cors = require('cors');
 const app = express();
 const port = 8000;
