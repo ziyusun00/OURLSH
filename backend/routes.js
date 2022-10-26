@@ -1,3 +1,4 @@
+const { Router } = require('express');
 const pool = require('./db')
 
 module.exports = function routes(app, logger) {
@@ -96,3 +97,63 @@ module.exports = function routes(app, logger) {
     });
   });
 }
+
+//POST /register/landlord
+app.post('/register/landlord', async (req, res, next) => {
+  try{
+    const body = req.body;
+    const result = await pool.createNewLandlord(body.firstName, body.lastname, body.email, body.password);
+    console.log("Result of createNewLandlord: ", result);
+    if(result.error === "Invalid email"){
+      console.log("Invalid email");
+      res.status(400).json({message: "Invalid email"});
+    } else if(result.error === "User already exists") {
+      console.log("User already exists");
+      res.status(400).json({message: "User already exists"});
+  } else if(result.error === "Incomplete input") {
+      console.log("Incomplete input");
+      res.status(400).json({message:"Incomplete input"});
+  } else {
+      console.log("Landlord created");
+      //Note: we don't need to authenticate the user here because the user is already created
+      //Also, the role is not added to the table because it can change every session
+      const token = await sessionController.generateAuthToken(body.email, 'landlord'); //the role is hardcoded to user
+      res.status(201).json({"accessToken": token});
+  }
+
+} catch (err) {
+  console.error('Failed to create new landlord profile:', err);
+  res.status(400).json({ message: err.toString() });
+}
+
+})
+
+//POST /register/tenant
+app.post('/register/tenant', async (req, res, next) => {
+  try{
+    const body = req.body;
+    const result = await pool.createNewTenant(body.firstName, body.lastname, body.email, body.password, body.landlord);
+    console.log("Result of createNewTenant: ", result);
+    if(result.error === "Invalid email"){
+      console.log("Invalid email");
+      res.status(400).json({message: "Invalid email"});
+    } else if(result.error === "User already exists") {
+      console.log("User already exists");
+      res.status(400).json({message: "User already exists"});
+  } else if(result.error === "Incomplete input") {
+      console.log("Incomplete input");
+      res.status(400).json({message:"Incomplete input"});
+  } else {
+      console.log("Tenant created");
+      //Note: we don't need to authenticate the user here because the user is already created
+      //Also, the role is not added to the table because it can change every session
+      const token = await sessionController.generateAuthToken(body.email, 'tenant'); //the role is hardcoded to user
+      res.status(201).json({"accessToken": token});
+  }
+
+} catch (err) {
+  console.error('Failed to create new tenant profile:', err);
+  res.status(400).json({ message: err.toString() });
+}
+
+})
