@@ -14,7 +14,7 @@ router.post('/tenant', async (req, res, next) => {
     if (email === undefined || password === undefined || first_name === undefined || last_name ===undefined){
         return res.sendStatus(400);
     }
-    const registerTenant = await req.model.register.registerTenant
+    const registerTenant = await req.models.register.createTenant
     (email,
     password,
     first_name,
@@ -37,7 +37,7 @@ router.post('/tenant', async (req, res, next) => {
     if (email === undefined || password === undefined || first_name === undefined || last_name ===undefined) {
         return res.sendStatus(400);
     }
-    const registerLandlord = await req.model.landlord.registerLandlord
+    const registerLandlord = await req.models.register.createLandlord
     (email,
     password,
     first_name,
@@ -47,4 +47,5 @@ router.post('/tenant', async (req, res, next) => {
     res.status(201).json(registerLandlord);
     next();
  });
- 
+
+ module.exports = router;
