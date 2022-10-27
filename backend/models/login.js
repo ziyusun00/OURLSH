@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken');
 const Landlord = require('../models/landlord');
 const Tenant = require('../models/tenant');
 const accessTokenSecret = 'not-a-password';
+const bcrypt = require('bcrypt');
 
-const authenticateTenant = async (email, password) => {
-    const tenants = await loginFetchTenantByEmail(email);
+const authenticateTenant = async (req, email, password) => {
+    const tenants = await req.models.tenant.loginFetchTenantByEmail(email);
     console.log('Results of users query', tenants);
     if (tenants.length === 0) {
         console.error(`No tenants matched the email: ${email}`);
@@ -14,13 +15,13 @@ const authenticateTenant = async (email, password) => {
     const validPassword = await bcrypt.compare(password, tenant.password);
     if (validPassword) {
 
-        tenant = jwt.sign({ ...tenants[0], claims: ['landlord'] }, accessTokenSecret);
-        return tenant;
+        let auth = jwt.sign({ ...tenants[0], claims: ['landlord'] }, accessTokenSecret);
+        return auth;
     }
     return null;
 }
-const authenticateLandlord = async (email, password) => {
-    const landlords = await loginFetchLandlordByEmail(email);
+const authenticateLandlord = async (req, email, password) => {
+    const landlords = await req.models.landlord.loginFetchLandlordByEmail(email);
     console.log('Results of users query', landlords);
     if (landlords.length === 0) {
         console.error(`No landlords matched the email: ${email}`);
@@ -30,8 +31,8 @@ const authenticateLandlord = async (email, password) => {
     const validPassword = await bcrypt.compare(password, landlord.password);
     if (validPassword) {
 
-        landlord = jwt.sign({ ...tenants[0], claims: ['landlord'] }, accessTokenSecret);
-        return landlord;
+        let auth = jwt.sign({ ...landlords[0], claims: ['landlord'] }, accessTokenSecret);
+        return auth;
     }
     return null;
 }
