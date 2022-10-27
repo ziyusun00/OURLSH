@@ -1,13 +1,13 @@
+const bodyParser = require('body-parser');
 const express = require('express');
-const router = express.Router();
-const TenantController = require('../controllers/tenant');
-const LandlordController = require('../controllers/landlord');
+router = express.Router();
+router.use(bodyParser.json());
 
 router.post('/tenant', async (req, res, next) => {
    try {
        const body = req.body;
       
-       const result = await authenticateTenant(body.email, body.password);
+       const result = await req.models.login.authenticateTenant(req, body.email, body.password);
        res.status(200).json(result);
    } catch (err) {
        console.error('Failed to authenticate user:', err);
@@ -20,7 +20,7 @@ router.post('/landlord', async (req, res, next) => {
     try {
         const body = req.body;
        
-        const result = await authenticateLandlord(body.email, body.password);
+        const result = await req.models.login.authenticateLandlord(req, body.email, body.password);
         res.status(200).json(result);
     } catch (err) {
         console.error('Failed to authenticate user:', err);
